@@ -23,7 +23,7 @@ services:
       - microservices-network
 
   eureka-server:
-    image: poojabagula/eureka-server:latest
+    image: your_docker_username/eureka-server:latest
     build:
       context: ./EurekaServer
       dockerfile: Dockerfile
@@ -35,13 +35,15 @@ services:
       - microservices-network
 
   api-gateway:
-    image: poojabagula/api-gateway:latest
+    image: your_docker_username/api-gateway:latest
     build:
       context: ./APIGateway
       dockerfile: Dockerfile
     container_name: api-gateway
     ports:
       - "9000:8000"
+    environment:
+      EUREKA_INSTANCE_STATUSPAGEURL: http://localhost:9000/actuator/info
     depends_on:
       - eureka-server
       - user-service
@@ -52,13 +54,15 @@ services:
       - microservices-network
 
   user-service:
-    image: poojabagula/user-service:latest
+    image: your_docker_username/user-service:latest
     build:
       context: ./UserService
       dockerfile: Dockerfile
     container_name: user-service
     ports:
       - "9001:8001"
+    environment:
+      EUREKA_INSTANCE_STATUSPAGEURL: http://localhost:9001/actuator/info
     depends_on:
       eureka-server:
         condition: service_started
@@ -69,13 +73,15 @@ services:
       - microservices-network
 
   product-service:
-    image: poojabagula/product-service:latest
+    image: your_docker_username/product-service:latest
     build:
       context: ./ProductService
       dockerfile: Dockerfile
     container_name: product-service
     ports:
       - "9002:8002"
+    environment:
+      EUREKA_INSTANCE_STATUSPAGEURL: http://localhost:9002/actuator/info
     depends_on:
       eureka-server:
         condition: service_started
@@ -86,13 +92,15 @@ services:
       - microservices-network
 
   order-service:
-    image: poojabagula/order-service:latest
+    image: your_docker_username/order-service:latest
     build:
       context: ./OrderService
       dockerfile: Dockerfile
     container_name: order-service
     ports:
       - "9003:8003"
+    environment:
+      EUREKA_INSTANCE_STATUSPAGEURL: http://localhost:9003/actuator/info
     depends_on:
       eureka-server:
         condition: service_started
